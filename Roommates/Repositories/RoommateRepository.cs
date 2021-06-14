@@ -8,14 +8,14 @@ namespace Roommates.Repositories
 
 /// This class is responsible for interacting with the Roommate data
 /// It inherits from the BaseRepository class which allows it use of the BaseRepository Connection Property
-{   
+{
 
     class RoommateRepository : BaseRepository
-{
+    {
         ///When new Roommate Repository is instantiated, pass the connection string back to the Base Repository
         public RoommateRepository(string connectionString) : base(connectionString) { }
-       
-       // /Get a list of all Roommates
+
+        // /Get a list of all Roommates
         public List<Roommate> GetAll()
         {
             //  We must "use" the database connection.
@@ -76,8 +76,8 @@ namespace Roommates.Repositories
                             LastName = lastNameValue,
                             RentPortion = rentPortionValue,
                             MoveInDate = moveInDateValue,
-                            Room  = new Room()
-                            { 
+                            Room = new Room()
+                            {
                                 Id = roomIdValue
                             }
 
@@ -87,7 +87,7 @@ namespace Roommates.Repositories
                         roommates.Add(roommate);
                     }
 
-                    
+
                     reader.Close();
 
                     //Return the list of roommates to wherever it was called
@@ -96,52 +96,55 @@ namespace Roommates.Repositories
             }
         }
         public Roommate GetById(int id)
-    {
-        using (SqlConnection conn = Connection)
         {
-            conn.Open();
-            using (SqlCommand cmd = conn.CreateCommand())
+            using (SqlConnection conn = Connection)
             {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
                     // Set up command text and any parameters before executing
                     // also it is best to get everything in your SELECT so the code is more useable further down the road
-                cmd.CommandText = @"
+                    cmd.CommandText = @"
                         SELECT rm.Id, rm.FirstName, rm.LastName, rm.RentPortion ,rm.MoveInDate, r.Id, r.Name as RoomName, r.MaxOccupancy  
                         FROM Roommate rm 
                         JOIN Room r On r.Id = rm.RoomId 
                         WHERE rm.Id = @id";
-                cmd.Parameters.AddWithValue("@id", id);
-                SqlDataReader reader = cmd.ExecuteReader();
-                
-                // declare roommate as null outside of if loop to feed to return
-                // otherwise if loops scope would not see roommate
-                Roommate roommate = null;
+                    cmd.Parameters.AddWithValue("@id", id);
+                    SqlDataReader reader = cmd.ExecuteReader();
 
-                //Since we are getting one row of a record no while loop is needed
-                if (reader.Read())
-                {
-                    roommate = new Roommate
+                    // declare roommate as null outside of if loop to feed to return
+                    // otherwise if loops scope would not see roommate
+                    Roommate roommate = null;
+
+                    //Since we are getting one row of a record no while loop is needed
+                    if (reader.Read())
                     {
-                        Id = id,
-                        FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
-                        LastName = reader.GetString(reader.GetOrdinal("LastName")),
-                        RentPortion = reader.GetInt32(reader.GetOrdinal("RentPortion")),
-                        MoveInDate = reader.GetDateTime(reader.GetOrdinal("MoveInDate")),
-                        Room = new Room()
-                        { 
-                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                            Name = reader.GetString(reader.GetOrdinal("RoomName")),
-                            MaxOccupancy = reader.GetInt32(reader.GetOrdinal("MaxOccupancy"))
-                        }
-    
-                    };
+                        roommate = new Roommate
+                        {
+                            Id = id,
+                            FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                            LastName = reader.GetString(reader.GetOrdinal("LastName")),
+                            RentPortion = reader.GetInt32(reader.GetOrdinal("RentPortion")),
+                            MoveInDate = reader.GetDateTime(reader.GetOrdinal("MoveInDate")),
+                            Room = new Room()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                Name = reader.GetString(reader.GetOrdinal("RoomName")),
+                                MaxOccupancy = reader.GetInt32(reader.GetOrdinal("MaxOccupancy"))
+                            }
 
+                        };
+
+                    }
+                    reader.Close();
+                    return roommate;
                 }
-                reader.Close();
-                return roommate;
             }
-        }
-    }
 
-   
-}
+        }
+
+        
+
+
+    }
 }
