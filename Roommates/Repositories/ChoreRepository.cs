@@ -132,8 +132,6 @@ namespace Roommates.Repositories
                 {
                     cmd.CommandText = @"SELECT c.Name, c.Id  
                                             FROM Chore c 
-                                            
-               
                                             WHERE c.id NOT IN (SELECT ChoreId FROM RoommateChore)";
                     SqlDataReader reader = cmd.ExecuteReader();
 
@@ -165,6 +163,26 @@ namespace Roommates.Repositories
                 }
                 
 
+            }
+        }
+
+        public void AssignChore(int roommateId, int choreId)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO RoommateChore (RoommateId, ChoreId)
+                                            OUTPUT INSERTED.Id
+                                            VALUES(@roommateId, @choreId)";
+                    cmd.Parameters.AddWithValue("@roommateId", roommateId);
+                    cmd.Parameters.AddWithValue("@choreId", choreId);
+
+                    int id = (int)cmd.ExecuteScalar();
+
+                    RoommateChore.Id = id;
+                }
             }
         }
     }

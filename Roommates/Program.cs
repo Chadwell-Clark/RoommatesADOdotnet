@@ -15,6 +15,7 @@ namespace Roommates
         {
             RoomRepository roomRepo = new RoomRepository(CONNECTION_STRING);
             ChoreRepository choreRepo = new ChoreRepository(CONNECTION_STRING);
+            RoommateRepository roommateRepo = new RoommateRepository(CONNECTION_STRING);
             bool runProgram = true;
             while (runProgram)
             {
@@ -107,6 +108,35 @@ namespace Roommates
                         Console.Write("Press any key to continue");
                         Console.ReadKey();
                         break;
+                    case ("Assign chore to roommate"):
+                        List<Chore> choreList = choreRepo.GetAll();
+                        foreach (Chore c in choreList)
+                        {
+                            Console.WriteLine($"{c.Id} : {c.Name}");
+                        }
+                        Console.Write("Enter chore number:  ");
+                        int choreNum = int.Parse(Console.ReadLine());
+
+                        List<Roommate> roommates = roommateRepo.GetAll();
+                        foreach (Roommate r in roommates)
+                        {
+                            Console.WriteLine($"{r.Id} : {r.FirstName} {r.LastName}");
+                        }
+                        Console.Write("Enter Roommate number:  ");
+                        int roommateNum = int.Parse(Console.ReadLine());
+
+                        
+
+
+
+
+
+
+
+
+                        Console.Write("Press any key to continue");
+                        Console.ReadKey();
+                        break;
 
                     case ("Exit"):
                         runProgram = false;
@@ -129,6 +159,7 @@ namespace Roommates
                 "Add a room",
                 "Add a chore",
                 "Unassigned chores",
+                "Assign chore to roommate",
                 "Exit"
             };
 
