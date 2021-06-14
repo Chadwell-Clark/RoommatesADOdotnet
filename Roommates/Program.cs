@@ -88,6 +88,7 @@ namespace Roommates
                         Console.Write("Press any key to continue");
                         Console.ReadKey();
                         break;
+
                     case ("Search for chore"):
                         Console.Write("Chore Id: ");
                         int choreId = int.Parse(Console.ReadLine());
@@ -98,6 +99,7 @@ namespace Roommates
                         Console.Write("Press any key to continue");
                         Console.ReadKey();
                         break;
+
                     case ("Unassigned chores"):
                         Console.WriteLine("Unassigned chores");
                         
@@ -109,6 +111,7 @@ namespace Roommates
                         Console.Write("Press any key to continue");
                         Console.ReadKey();
                         break;
+
                     case ("Assign chore to roommate"):
                         List<Chore> choreList = choreRepo.GetAll();
                         foreach (Chore c in choreList)
@@ -172,17 +175,18 @@ namespace Roommates
                         Console.Write("Press any key to continue");
                         Console.ReadKey();
                         break;
-
                     case ("Delete a room"):
-                        List<Room> roomsList = roomRepo.GetAll();
-                        foreach (Room r in roomsList)
+                        List<Room> roomList = roomRepo.GetAll();
+                        foreach (Room r in roomList)
                         {
                             Console.WriteLine($"{r.Id} - {r.Name} Max Occupancy({r.MaxOccupancy})");
                         }
 
-                        Console.Write("Which room would you like to delete? ");
+                        Console.Write("Which room would you like to update? ");
                         int roomToDelete = int.Parse(Console.ReadLine());
+
                         roomRepo.Delete(roomToDelete);
+                        Console.WriteLine("");
 
                         Console.Write("Press any key to continue");
                         Console.ReadKey();
@@ -208,7 +212,9 @@ namespace Roommates
                 "Search for chore",
                 "Add a room",
                 "Update a room",
+                "Delete a room",
                 "Add a chore",
+                "Update a chore",
                 "Unassigned chores",
                 "Assign chore to roommate",
                 "Exit"

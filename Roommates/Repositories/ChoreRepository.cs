@@ -185,5 +185,38 @@ namespace Roommates.Repositories
                 }
             }
         }
+
+        public void Update(Chore chore)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"UPDATE Chore
+                                            Set Name=@name
+                                            Where Id = @id";
+                    cmd.Parameters.AddWithValue("@name", chore.Name);
+                    cmd.Parameters.AddWithValue("@id", chore.Id);
+
+                    cmd.ExecuteNonQuery();
+
+                }
+            }
+        }
+
+        public void Delete(int id)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "DELETE FROM Chore WHERE id = @id";
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }
