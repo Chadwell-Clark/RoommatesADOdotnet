@@ -127,7 +127,7 @@ namespace Roommates.Repositories
                                             OUTPUT INSERTED.Id  
                                             VALUES (@name, @maxOccupancy)";
                     cmd.Parameters.AddWithValue("@name", room.Name);
-                    cmd.Parameters.AddWithValue("@maxOccupanct", room.MaxOccupancy);
+                    cmd.Parameters.AddWithValue("@maxOccupancy", room.MaxOccupancy);
                     int id = (int)cmd.ExecuteScalar();
 
                     room.Id = id;
