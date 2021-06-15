@@ -218,5 +218,18 @@ namespace Roommates.Repositories
                 }
             }
         }
+
+        //public List<ChoreCount> GetChoreCounts()
+        //{
+        //    using (SqlConnection conn = Connection)
+        //    {
+        //        conn.Open();
+        //        using (SqlCommand cmd = conn.CreateCommand())
+        //        {
+        //            cmd.CommandText = @"SELECT ";
+        //        }
+                
+        //    }
+        //}
     }
 }
